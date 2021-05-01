@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stop Watch</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+      html{
+        background-color: navajowhite;
+      }
+      .main{
+        display: grid;
+        place-content: center;
+        height: 100vh;
+        width: 100vw;
+        grid-gap: 20px;
+      }
+      label{
+        font-size: 19px;
+        font-weight: bold;
+        text-align: center;
+      }
+      input{
+        padding: 3px 10px;
+        font-size: 15px;
+      }
+      button{
+        padding: 5px ;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="main">
+      <label for="sec" >Enter time :</label>
+      <audio src="preview.mp3" id="alarm"></audio>
+      <input type="text" name="" id="sec" placeholder="Time in seconds" />
+      <button id="btn">Start StopWatch</button>
+      <button id="rst">Reset</button>
+    </div>
+
+    <script>
+      const btn = document.getElementById("btn");
+      const rst = document.getElementById("rst");
+      var sound = document.getElementById("alarm");
+      const start = () => {
+        var sec = document.getElementById("sec").value;
+        console.log(sec);
+        document.getElementById("sec").value = sec + " sec left";
+        var reset1 = setInterval(() => {
+          sec = sec - 1;
+          if (sec >= 0) {
+            document.getElementById("sec").value = sec + " sec left";
+          }
+        }, 1000);
+        document.getElementById("btn").disabled = true;
+        document.getElementById("sec").disabled = true;
+        var reset2 = setTimeout(() => {
+          sound.play();
+          document.getElementById("btn").disabled = false;
+          document.getElementById("sec").disabled = false;
+          document.getElementById("sec").value = null;
+        }, sec * 1000);
+        const reset = () => {
+          console.log("Reset button is pressed");
+          clearInterval(reset1);
+          clearTimeout(reset2);
+          sound.pause();
+          document.getElementById("btn").disabled = false;
+          document.getElementById("sec").disabled = false;
+          document.getElementById("sec").value = null;
+        };
+        rst.addEventListener("click", reset);
+      };
+      btn.addEventListener("click", start);
+    </script>
+  </body>
+</html>
